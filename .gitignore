@@ -1,3 +1,15 @@
+# C++ compiled files/objects and binary
+*.o
+*.exe
+
+# Code::Blocks extra files (.cbp project file still included)
+*.depend
+*.layout
+
+# Tecplot plt files and txt files
+*.plt
+*.txt
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
