@@ -34,8 +34,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Block.h" />
 		<Unit filename="include/Nodes.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Block.cpp" />
 		<Unit filename="src/Node_main.cpp" />
 		<Unit filename="src/Node_types.cpp" />
 		<Extensions>
