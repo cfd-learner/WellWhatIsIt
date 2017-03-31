@@ -251,22 +251,7 @@ void Block::initNodes(unsigned TYPE, double RHOi, double RHOo, bool test) {
         _Nodes[n]->initF();
     }
 
-    if (test) {
-        for (unsigned n=0; n<_Nodes.size(); n++) {
-            cout<<"Node "<<_Nodes[n]->_ID<<endl;
-            cout<<"  Address: "<<_Nodes[n]<<endl;
-            cout<<"  Neighbs: ";
-            for (int k=0; k<K; k++) {
-                if (_Nodes[n]->_Neighbors[k]) cout<<_Nodes[n]->_Neighbors[k]->_ID<<" ";
-                else cout<<"_ ";
-            } cout<<endl;
-            cout<<"  rho    : "<<_Nodes[n]->_rho<<endl;
-            cout<<"  u      : "<<_Nodes[n]->_u<<endl;
-            cout<<"  v      : "<<_Nodes[n]->_v<<endl;
-            for (int k=0; k<K; k++) cout<<"  feq"<<k<<"   : "<<_Nodes[n]->_feq[k]<<endl;
-            for (int k=0; k<K; k++) cout<<"  f"<<k<<"    : "<<_Nodes[n]->_f[k]<<endl;
-        }
-    }
+    if (test) for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->printInfo();
 }
 
 void Block::allStream() {

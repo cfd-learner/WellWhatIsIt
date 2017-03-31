@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <iomanip>
-//#include <cmath>
+#include <cmath>
 
 /*
     0       1         ...  J-1
@@ -84,4 +84,19 @@ void Node::calcV(vector<double>& Ey, bool test) {
     if (test) {
         cout<<_ID<<" "<<_v<<endl;
     }
+}
+
+void Node::printInfo() {
+    cout<<"Node "<<_Nodes[n]->_ID<<endl;
+    cout<<"  Address: "<<_Nodes[n]<<endl;
+    cout<<"  Neighbs: ";
+    for (unsigned k=0; k<K; k++) {
+        if (_Nodes[n]->_Neighbors[k]) cout<<_Nodes[n]->_Neighbors[k]->_ID<<" ";
+        else cout<<"_ ";
+    } cout<<endl;
+    cout<<"  rho    : "<<_Nodes[n]->_rho<<endl;
+    cout<<"  u      : "<<_Nodes[n]->_u<<endl;
+    cout<<"  v      : "<<_Nodes[n]->_v<<endl;
+    for (unsigned k=0; k<K; k++) cout<<"  feq"<<k<<"   : "<<_Nodes[n]->_feq[k]<<endl;
+    for (unsigned k=0; k<K; k++) cout<<"  f"<<k<<"    : "<<_Nodes[n]->_f[k]<<endl;
 }
