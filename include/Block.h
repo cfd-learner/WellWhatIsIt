@@ -3,8 +3,6 @@
 
 #include <Nodes.h>
 
-#include <vector>
-
 class Block
 {
     public:

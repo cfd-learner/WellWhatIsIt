@@ -10,8 +10,7 @@ extern double C;
 
 //SIDE directions look towards walls, into corners.
 
-class Node
-{
+class Node {
     public:
         Node(unsigned ID, unsigned NSIDE, unsigned BSIDE, double rho);
         virtual void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false) = 0;
@@ -25,11 +24,8 @@ class Node
         void printInfo();
 
         unsigned getID() {return _ID;};
-        double getRho() {return _rho;};
-        double getU() {return _u;};
-        double getV() {return _v;};
+        void setF(unsigned k, double f) {_f[k] = f;};
         double getF(unsigned k) {return _f[k];};
-        Node* getNeighbor(unsigned k) {return _Neighbors[k];};
 
     protected:
         unsigned _ID, _NSIDE, _BSIDE;
@@ -39,56 +35,49 @@ class Node
         vector<Node*> _Neighbors;
 };
 
-class NodeInternal: public Node
-{
+class NodeInternal: public Node {
     public:
         NodeInternal(unsigned ID, double rho): Node(ID, 0, 0, rho) {};
         void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false);
         void boundaryConditions(bool test=false) {};
 };
 
-class NodeWall: public Node
-{
+class NodeWall: public Node {
     public:
         NodeWall(unsigned ID, unsigned SIDE, double rho): Node(ID, SIDE, SIDE, rho) {_ISFIXEDU = true; _ISFIXEDV = true;};
         void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false);
         void boundaryConditions(bool test=false);
 };
 
-class NodePressureEdge: public Node
-{
+class NodePressureEdge: public Node {
     public:
         NodePressureEdge(unsigned ID, unsigned SIDE, double rho): Node(ID, SIDE, SIDE, rho) {_ISFIXEDRHO = true;};
         void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false);
         void boundaryConditions(bool test=false);
 };
 
-class NodePressureCorner: public Node
-{
+class NodePressureCorner: public Node {
     public:
         NodePressureCorner(unsigned ID, unsigned SIDE, double rho): Node(ID, SIDE, SIDE, rho) {_ISFIXEDRHO = true; _ISFIXEDU = true; _ISFIXEDV = true;};
         void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false);
         void boundaryConditions(bool test=false);
 };
 
-class NodeInternalSeam: public Node
-{
+class NodeInternalSeam: public Node {
     public:
         NodeInternalSeam(unsigned ID, unsigned SIDE, double rho): Node(ID, SIDE, 0, rho) {};
         void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false);
         void boundaryConditions(bool test=false) {};
 };
 
-class NodeWallSeam: public Node
-{
+class NodeWallSeam: public Node {
     public:
         NodeWallSeam(unsigned ID, unsigned NSIDE, unsigned BSIDE, double rho): Node(ID, NSIDE, BSIDE, rho) {_ISFIXEDU = true; _ISFIXEDV = true;};
         void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false);
         void boundaryConditions(bool test=false);
 };
 
-class NodePressureSeam: public Node
-{
+class NodePressureSeam: public Node {
     public:
         NodePressureSeam(unsigned ID, unsigned NSIDE, unsigned BSIDE, double rho): Node(ID, NSIDE, BSIDE, rho) {_ISFIXEDRHO = true; _ISFIXEDU = true; _ISFIXEDV = true;};
         void initNeighbors(vector<Node*>& Nodes, unsigned J, bool test=false);

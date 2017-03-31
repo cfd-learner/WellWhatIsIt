@@ -24,8 +24,8 @@ void NodeInternal::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
 
     if (test) {
         for (unsigned k=0; k<K; k++) {
-            if (_Neighbors[k] && _Neighbors[k]->_ID<10) cout<<" "<<_Neighbors[k]->_ID<<" ";
-            else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
+            if (_Neighbors[k] && _Neighbors[k]->getID() < 10) cout<<" "<<_Neighbors[k]->getID()<<" ";
+            else if (_Neighbors[k]) cout<<_Neighbors[k]->getID()<<" ";
             else cout<<" _ ";
         }
         cout<<endl;
@@ -68,8 +68,8 @@ void NodeWall::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
 
     if (test) {
         for (unsigned k=0; k<K; k++) {
-            if (_Neighbors[k] && _Neighbors[k]->_ID<10) cout<<" "<<_Neighbors[k]->_ID<<" ";
-            else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
+            if (_Neighbors[k] && _Neighbors[k]->getID() < 10) cout<<" "<<_Neighbors[k]->getID()<<" ";
+            else if (_Neighbors[k]) cout<<_Neighbors[k]->getID()<<" ";
             else cout<<" _ ";
         }
         cout<<endl;
@@ -124,8 +124,8 @@ void NodePressureEdge::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test
 
     if (test) {
         for (unsigned k=0; k<K; k++) {
-            if (_Neighbors[k] && _Neighbors[k]->_ID<10) cout<<" "<<_Neighbors[k]->_ID<<" ";
-            else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
+            if (_Neighbors[k] && _Neighbors[k]->getID() < 10) cout<<" "<<_Neighbors[k]->getID()<<" ";
+            else if (_Neighbors[k]) cout<<_Neighbors[k]->getID()<<" ";
             else cout<<" _ ";
         }
         cout<<endl;
@@ -177,8 +177,8 @@ void NodePressureCorner::initNeighbors(vector<Node*>& Nodes, unsigned J, bool te
 
     if (test) {
         for (unsigned k=0; k<K; k++) {
-            if (_Neighbors[k] && _Neighbors[k]->_ID<10) cout<<" "<<_Neighbors[k]->_ID<<" ";
-            else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
+            if (_Neighbors[k] && _Neighbors[k]->getID() < 10) cout<<" "<<_Neighbors[k]->getID()<<" ";
+            else if (_Neighbors[k]) cout<<_Neighbors[k]->getID()<<" ";
             else cout<<" _ ";
         }
         cout<<endl;
@@ -275,8 +275,8 @@ void NodeInternalSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test
 
     if (test) {
         for (unsigned k=0; k<K; k++) {
-            if (_Neighbors[k] && _Neighbors[k]->_ID<10) cout<<" "<<_Neighbors[k]->_ID<<" ";
-            else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
+            if (_Neighbors[k] && _Neighbors[k]->getID() < 10) cout<<" "<<_Neighbors[k]->getID()<<" ";
+            else if (_Neighbors[k]) cout<<_Neighbors[k]->getID()<<" ";
             else cout<<" _ ";
         }
         cout<<endl;
@@ -311,8 +311,8 @@ void NodeWallSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
 
     if (test) {
         for (unsigned k=0; k<K; k++) {
-            if (_Neighbors[k] && _Neighbors[k]->_ID<10) cout<<" "<<_Neighbors[k]->_ID<<" ";
-            else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
+            if (_Neighbors[k] && _Neighbors[k]->getID() < 10) cout<<" "<<_Neighbors[k]->getID()<<" ";
+            else if (_Neighbors[k]) cout<<_Neighbors[k]->getID()<<" ";
             else cout<<" _ ";
         }
         cout<<endl;
@@ -373,8 +373,8 @@ void NodePressureSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test
 
     if (test) {
         for (unsigned k=0; k<K; k++) {
-            if (_Neighbors[k] && _Neighbors[k]->_ID<10) cout<<" "<<_Neighbors[k]->_ID<<" ";
-            else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
+            if (_Neighbors[k] && _Neighbors[k]->getID() < 10) cout<<" "<<_Neighbors[k]->getID()<<" ";
+            else if (_Neighbors[k]) cout<<_Neighbors[k]->getID()<<" ";
             else cout<<" _ ";
         }
         cout<<endl;

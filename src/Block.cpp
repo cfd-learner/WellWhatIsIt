@@ -278,38 +278,38 @@ void Block::allSeams() {
     if (_Neighbors[3]) fillSeam(_Edge3, _Neighbors[3]->_Edge1, 3, 6, 7);
     if (_Neighbors[4]) fillSeam(_Edge4, _Neighbors[4]->_Edge2, 4, 7, 8);
 
-    if (_Neighbors[5]) _Edge1.back()->_f[5] = _Neighbors[5]->_Edge3[0]->_f[5];
-    if (_Neighbors[6]) _Edge3.back()->_f[6] = _Neighbors[6]->_Edge1[0]->_f[6];
-    if (_Neighbors[7]) _Edge3[0]->_f[7] = _Neighbors[7]->_Edge1.back()->_f[7];
-    if (_Neighbors[8]) _Edge1[0]->_f[8] = _Neighbors[8]->_Edge3.back()->_f[8];
+    if (_Neighbors[5]) _Edge1.back()->setF( 5, _Neighbors[5]->_Edge3[0]->getF(5) );
+    if (_Neighbors[6]) _Edge3.back()->setF( 6, _Neighbors[6]->_Edge1[0]->getF(6) );
+    if (_Neighbors[7]) _Edge3[0]->setF( 7, _Neighbors[7]->_Edge1.back()->getF(7) );
+    if (_Neighbors[8]) _Edge1[0]->setF( 8, _Neighbors[8]->_Edge3.back()->getF(8) );
 
 }
 
 void Block::fillSeam(vector<Node*> Edge, vector<Node*> Edge2, int k1, int k2, int k3) {
 
     unsigned nratio;
-    double j1, j2; unsigned jn; //junk variables
+    double jawn1, jawn2; unsigned njawn; //junk variables
     if (Edge.size() <= Edge2.size()) { //receiving edge has less/same # of nodes
         nratio = (Edge2.size()-1) / (Edge.size()-1);
         for (unsigned n=0; n<Edge.size(); n++) {
-            Edge[n]->_f[k1] = Edge2[n*nratio]->_f[k1];
-            Edge[n]->_f[k2] = Edge2[n*nratio]->_f[k2];
-            Edge[n]->_f[k3] = Edge2[n*nratio]->_f[k3];
+            Edge[n]->setF( k1, Edge2[n*nratio]->getF(k1) );
+            Edge[n]->setF( k2, Edge2[n*nratio]->getF(k2) );
+            Edge[n]->setF( k3, Edge2[n*nratio]->getF(k3) );
         }
     } else { //receiving edge has more nodes
         nratio = (Edge.size()-1) / (Edge2.size()-1);
         for (unsigned n=0; n<Edge.size(); n++) {
-            jn = n/nratio;
+            njawn = n/nratio;
             if (n%nratio != 0) {
-                j2 = double(n%nratio)/nratio;
-                j1 = 1 - j2;
-                Edge[n]->_f[k1] = j1*Edge2[jn]->_f[k1] + j2*Edge2[jn+1]->_f[k1];
-                Edge[n]->_f[k2] = j1*Edge2[jn]->_f[k2] + j2*Edge2[jn+1]->_f[k2];
-                Edge[n]->_f[k3] = j1*Edge2[jn]->_f[k3] + j2*Edge2[jn+1]->_f[k3];
+                jawn2 = double(n%nratio)/nratio;
+                jawn1 = 1 - jawn2;
+                Edge[n]->setF( k1, jawn1*Edge2[njawn]->getF(k1) + jawn2*Edge2[njawn+1]->getF(k1) );
+                Edge[n]->setF( k2, jawn1*Edge2[njawn]->getF(k2) + jawn2*Edge2[njawn+1]->getF(k2) );
+                Edge[n]->setF( k3, jawn1*Edge2[njawn]->getF(k3) + jawn2*Edge2[njawn+1]->getF(k3) );
             } else {
-                Edge[n]->_f[k1] = Edge2[jn]->_f[k1];
-                Edge[n]->_f[k2] = Edge2[jn]->_f[k2];
-                Edge[n]->_f[k3] = Edge2[jn]->_f[k3];
+                Edge[n]->setF( k1, Edge2[njawn]->getF(k1) );
+                Edge[n]->setF( k2, Edge2[njawn]->getF(k2) );
+                Edge[n]->setF( k3, Edge2[njawn]->getF(k3) );
             }
         }
     }
