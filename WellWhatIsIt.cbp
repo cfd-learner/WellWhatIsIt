@@ -36,10 +36,12 @@
 		</Compiler>
 		<Unit filename="include/Block.h" />
 		<Unit filename="include/Nodes.h" />
+		<Unit filename="include/Simulation.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Block.cpp" />
 		<Unit filename="src/Node_main.cpp" />
 		<Unit filename="src/Node_types.cpp" />
+		<Unit filename="src/Simulation.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

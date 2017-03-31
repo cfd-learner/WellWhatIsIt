@@ -21,8 +21,9 @@ class Block
         void allFeq() {for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->calcFeq(_C, _W, _Ex, _Ey);};
         Node* getNode(int n) {return _Nodes[n];};
 
-    private:
         const unsigned _ID, _TYPE, _L, _I, _J, _N;
+
+    private:
         double _DX, _DT, _C, _TAU;
         vector<double> _Ex, _Ey, _W;
         vector<Node*> _Nodes, _Edge1, _Edge2, _Edge3, _Edge4;

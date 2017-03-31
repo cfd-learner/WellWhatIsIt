@@ -23,12 +23,12 @@ class Node {
         void calcV(vector<double>& Ey, bool test=false);
         void printInfo();
 
-        unsigned getID() {return _ID;};
         void setF(unsigned k, double f) {_f[k] = f;};
         double getF(unsigned k) {return _f[k];};
 
+        const unsigned _ID, _NSIDE, _BSIDE;
+
     protected:
-        unsigned _ID, _NSIDE, _BSIDE;
         double _rho, _u, _v;
         bool _ISFIXEDRHO, _ISFIXEDU, _ISFIXEDV;
         vector<double> _f, _feq;
