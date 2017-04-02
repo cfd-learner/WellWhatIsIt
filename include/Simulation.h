@@ -3,7 +3,6 @@
 
 #include <Block.h>
 
-#include <vector>
 #include <string>
 
 class Simulation

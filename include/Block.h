@@ -13,18 +13,20 @@ class Block
         void initNodes(unsigned TYPE, double RHOi, double RHOo, bool test=false);
         void allStream();
         void allSeams();
-        void fillSeam(vector<Node*> Edge, vector<Node*> Edge2, int k1, int k2, int k3);
+        void fillSeam(vector<Node*> Edge, vector<Node*> Edge2, unsigned k1, unsigned k2, unsigned k3);
         void allBC() {for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->boundaryConditions();};
         void allRho() {for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->calcRho();};
         void allU() {for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->calcU(_Ex);};
         void allV() {for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->calcV(_Ey);};
         void allFeq() {for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->calcFeq(_C, _W, _Ex, _Ey);};
-        Node* getNode(int n) {return _Nodes[n];};
+
+        Node* getNode(unsigned n) {return _Nodes[n];};
+        double getU(unsigned n) {return _Nodes[n]->getU();};
 
         const unsigned _ID, _TYPE, _L, _I, _J, _N;
+        const double _DX, _DT, _C, _TAU;
 
     private:
-        double _DX, _DT, _C, _TAU;
         vector<double> _Ex, _Ey, _W;
         vector<Node*> _Nodes, _Edge1, _Edge2, _Edge3, _Edge4;
         vector<Block*> _Neighbors;

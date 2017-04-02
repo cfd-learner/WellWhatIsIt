@@ -285,7 +285,7 @@ void Block::allSeams() {
 
 }
 
-void Block::fillSeam(vector<Node*> Edge, vector<Node*> Edge2, int k1, int k2, int k3) {
+void Block::fillSeam(vector<Node*> Edge, vector<Node*> Edge2, unsigned k1, unsigned k2, unsigned k3) {
 
     unsigned nratio;
     double jawn1, jawn2; unsigned njawn; //junk variables

@@ -2,8 +2,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <fstream>
 
 Simulation::Simulation(string geo, unsigned STEPS, double DX0, double DT0, double TAU, double RHOi, double RHOo):
     _STEPS(STEPS),
@@ -28,12 +26,11 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
     Fin>>_I>>_J; //get I and J from first line
     _N = _I * _J;
 
-    unsigned n(0), type, level, i, j;
+    unsigned n = 0, type, level, i, j;
     while (Fin>>type>>level>>i>>j) {
         _Blocks.push_back(new Block(n, type, level, i, j, _DX0, _DT0, _TAU, _RHOi, _RHOo));
         if (test) {
-            cout<<endl<<"Block "<<n<<endl<<"Type "<<type<<endl<<"Level "<<level<<endl<<"I "<<i<<endl<<"J "<<j;
-            cin.get();
+            cout<<endl<<"Block "<<n<<", Type "<<type<<", Level "<<level<<", I "<<i<<", J "<<j;
         }
         if (level == 0) _BL0.push_back(_Blocks[n]);
         else if (level == 1) _BL1.push_back(_Blocks[n]);
@@ -136,7 +133,7 @@ void Simulation::wellWhatIsIt(Block* Blockjawn, bool test) {
 void Simulation::theLegendNeverDies() {
     ofstream fout("output.txt");
     double y = 0.;
-    for (unsigned n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<" "<<_Blocks[1]->_Nodes[n]->_u<<endl; y += _Blocks[1]->_DX;}
-    for (unsigned n=_Blocks[4]->_J+_J/2; n<_Blocks[4]->_N; n+=_Blocks[4]->_J) {fout<<y<<" "<<_Blocks[4]->_Nodes[n]->_u<<endl; y += _Blocks[4]->_DX;}
-    for (unsigned n=_Blocks[7]->_J+_J/2; n<_Blocks[7]->_N; n+=_Blocks[7]->_J) {fout<<y<<" "<<_Blocks[7]->_Nodes[n]->_u<<endl; y += _Blocks[7]->_DX;}
+    for (unsigned n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<" "<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
+    for (unsigned n=_Blocks[4]->_J+_J/2; n<_Blocks[4]->_N; n+=_Blocks[4]->_J) {fout<<y<<" "<<_Blocks[4]->getU(n)<<endl; y += _Blocks[4]->_DX;}
+    for (unsigned n=_Blocks[7]->_J+_J/2; n<_Blocks[7]->_N; n+=_Blocks[7]->_J) {fout<<y<<" "<<_Blocks[7]->getU(n)<<endl; y += _Blocks[7]->_DX;}
 }

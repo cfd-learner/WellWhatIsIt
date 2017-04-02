@@ -25,6 +25,7 @@ class Node {
 
         void setF(unsigned k, double f) {_f[k] = f;};
         double getF(unsigned k) {return _f[k];};
+        double getU() {return _u;};
 
         const unsigned _ID, _NSIDE, _BSIDE;
 
