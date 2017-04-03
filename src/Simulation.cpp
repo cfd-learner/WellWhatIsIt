@@ -43,7 +43,7 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
 
     if (test) {
         cout<<endl<<_I<<" rows, "<<_J<<" columns, "<<_N<<" total blocks."<<endl;
-        cin.get();
+//        cin.get();
         cout<<"Block types:"<<endl;
         for (unsigned i=0; i<_I; i++)
         {
@@ -54,7 +54,7 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
             }
             cout<<endl;
         }
-        cin.get();
+//        cin.get();
         cout<<"Block levels:"<<endl;
         for (unsigned i=0; i<_I; i++)
         {
@@ -65,19 +65,19 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
             }
             cout<<endl;
         }
-        cin.get();
+//        cin.get();
         cout<<"Level 0:"; if (_BL0.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL0.size(); n++) cout<<_BL0[n]->_ID<<endl;
-        cin.get();
+//        cin.get();
         cout<<"Level 1:"; if (_BL1.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL1.size(); n++) cout<<_BL1[n]->_ID<<endl;
-        cin.get();
+//        cin.get();
         cout<<"Level 2:"; if (_BL2.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL2.size(); n++) cout<<_BL2[n]->_ID<<endl;
-        cin.get();
+//        cin.get();
         cout<<"Level 3:"; if (_BL3.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL3.size(); n++) cout<<_BL3[n]->_ID<<endl;
-        cin.get();
+//        cin.get();
     }
 }
 
@@ -94,28 +94,28 @@ void Simulation::giantsGiantsGiants(unsigned level) {
     switch (level) {
     case 0:
         giantsGiantsGiants(1);
-        for (unsigned n0=0; n0<_BL0.size(); n0++) wellWhatIsIt(_BL0[n0]);
+        for (unsigned n0=0; n0<_BL0.size(); n0++) everythingYouNeed(_BL0[n0]);
         break;
     case 1:
         giantsGiantsGiants(2);
-        for (unsigned n1=0; n1<_BL1.size(); n1++) wellWhatIsIt(_BL1[n1]);
+        for (unsigned n1=0; n1<_BL1.size(); n1++) everythingYouNeed(_BL1[n1]);
         giantsGiantsGiants(2);
-        for (unsigned n1=0; n1<_BL1.size(); n1++) wellWhatIsIt(_BL1[n1]);
+        for (unsigned n1=0; n1<_BL1.size(); n1++) everythingYouNeed(_BL1[n1]);
         break;
     case 2:
         giantsGiantsGiants(3);
-        for (unsigned n2=0; n2<_BL2.size(); n2++) wellWhatIsIt(_BL2[n2]);
+        for (unsigned n2=0; n2<_BL2.size(); n2++) everythingYouNeed(_BL2[n2]);
         giantsGiantsGiants(3);
-        for (unsigned n2=0; n2<_BL2.size(); n2++) wellWhatIsIt(_BL2[n2]);
+        for (unsigned n2=0; n2<_BL2.size(); n2++) everythingYouNeed(_BL2[n2]);
         break;
     case 3:
-        for (unsigned n3=0; n3<_BL3.size(); n3++) wellWhatIsIt(_BL3[n3]);
-        for (unsigned n3=0; n3<_BL3.size(); n3++) wellWhatIsIt(_BL3[n3]);
+        for (unsigned n3=0; n3<_BL3.size(); n3++) everythingYouNeed(_BL3[n3]);
+        for (unsigned n3=0; n3<_BL3.size(); n3++) everythingYouNeed(_BL3[n3]);
         break;
     }
 }
 
-void Simulation::wellWhatIsIt(Block* Blockjawn, bool test) {
+void Simulation::everythingYouNeed(Block* Blockjawn, bool test) {
     Blockjawn->allStream();
     Blockjawn->allSeams();
     Blockjawn->allBC();

@@ -78,7 +78,7 @@ void Block::initE() {
 
 void Block::initNodes(unsigned TYPE, double RHOi, double RHOo, bool test) {
 
-    unsigned n(0);
+    unsigned n = 0;
     switch (TYPE) {
     case 0: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, RHOo, 6));
@@ -246,7 +246,7 @@ void Block::initNodes(unsigned TYPE, double RHOi, double RHOo, bool test) {
     }
 
     for (unsigned n=0; n<_N; n++) {
-        _Nodes[n]->initNeighbors(_Nodes, _J);
+        _Nodes[n]->initNeighbors(_Nodes, _J, true);
         _Nodes[n]->calcFeq(_C, _W, _Ex, _Ey);
         _Nodes[n]->initF();
     }
