@@ -43,7 +43,7 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
 
     if (test) {
         cout<<endl<<_I<<" rows, "<<_J<<" columns, "<<_N<<" total blocks."<<endl;
-//        cin.get();
+        cin.get();
         cout<<"Block types:"<<endl;
         for (unsigned i=0; i<_I; i++)
         {
@@ -54,7 +54,7 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
             }
             cout<<endl;
         }
-//        cin.get();
+        cin.get();
         cout<<"Block levels:"<<endl;
         for (unsigned i=0; i<_I; i++)
         {
@@ -65,19 +65,19 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
             }
             cout<<endl;
         }
-//        cin.get();
+        cin.get();
         cout<<"Level 0:"; if (_BL0.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL0.size(); n++) cout<<_BL0[n]->_ID<<endl;
-//        cin.get();
+        cin.get();
         cout<<"Level 1:"; if (_BL1.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL1.size(); n++) cout<<_BL1[n]->_ID<<endl;
-//        cin.get();
+        cin.get();
         cout<<"Level 2:"; if (_BL2.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL2.size(); n++) cout<<_BL2[n]->_ID<<endl;
-//        cin.get();
+        cin.get();
         cout<<"Level 3:"; if (_BL3.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL3.size(); n++) cout<<_BL3[n]->_ID<<endl;
-//        cin.get();
+        cin.get();
     }
 }
 
