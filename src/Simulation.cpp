@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 Simulation::Simulation(string geo, unsigned STEPS, double DX0, double DT0, double TAU, double RHOi, double RHOo):
     _STEPS(STEPS),
@@ -19,15 +20,32 @@ Simulation::Simulation(string geo, unsigned STEPS, double DX0, double DT0, doubl
 
 void Simulation::whatAreYouCasul(string geometry_path, bool test) {
 
-    //open geometry.txt
     cout<<"Opening geometry file: "<<geometry_path<<endl;
-    ifstream Fin(geometry_path.c_str());
+    ifstream Geo_in(geometry_path.c_str());
+    string linejawn, typejawn, leveljawn, ijawn, jjawn;
+    unsigned c = 0;
 
-    Fin>>_I>>_J; //get I and J from first line
+    //get I and J from first line
+    getline(Geo_in, linejawn);
+    while (linejawn[c] != ',') {ijawn += linejawn[c]; c++;} c++;
+    stringstream(ijawn)>>_I;
+    while (c < linejawn.size()) {jjawn += linejawn[c]; c++;}
+    stringstream(jjawn)>>_J;
     _N = _I * _J;
 
-    unsigned n = 0, type, level, i, j;
-    while (Fin>>type>>level>>i>>j) {
+    int n = 0, type, level, i, j;
+    while (getline(Geo_in, linejawn)) {
+        typejawn.clear(); leveljawn.clear(); ijawn.clear(); jjawn.clear();
+        c = 0;
+        while (linejawn[c] != ',') {typejawn += linejawn[c]; c++;} c++;
+        stringstream(typejawn)>>type;
+        while (linejawn[c] != ',') {leveljawn += linejawn[c]; c++;} c++;
+        stringstream(leveljawn)>>level;
+        while (linejawn[c] != ',') {ijawn += linejawn[c]; c++;} c++;
+        stringstream(ijawn)>>i;
+        while (c < linejawn.size()) {jjawn += linejawn[c]; c++;}
+        stringstream(jjawn)>>j;
+
         _Blocks.push_back(new Block(n, type, level, i, j, _DX0, _DT0, _TAU, _RHOi, _RHOo));
         if (test) {
             cout<<endl<<"Block "<<n<<", Type "<<type<<", Level "<<level<<", I "<<i<<", J "<<j;
@@ -131,10 +149,10 @@ void Simulation::everythingYouNeed(Block* Blockjawn, bool test) {
 }
 
 void Simulation::theLegendNeverDies() {
-    ofstream fout("output.txt");
+    ofstream fout("output.csv");
     double y = 0.;
 //    for (unsigned n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<" "<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
 //    for (unsigned n=_Blocks[4]->_J+_J/2; n<_Blocks[4]->_N; n+=_Blocks[4]->_J) {fout<<y<<" "<<_Blocks[4]->getU(n)<<endl; y += _Blocks[4]->_DX;}
 //    for (unsigned n=_Blocks[7]->_J+_J/2; n<_Blocks[7]->_N; n+=_Blocks[7]->_J) {fout<<y<<" "<<_Blocks[7]->getU(n)<<endl; y += _Blocks[7]->_DX;}
-    for (unsigned n=_Blocks[0]->_J/2; n<_Blocks[0]->_N; n+=_Blocks[0]->_J) {fout<<y<<" "<<_Blocks[0]->getU(n)<<endl; y += _Blocks[0]->_DX;}
+    for (unsigned n=_Blocks[0]->_J/2; n<_Blocks[0]->_N; n+=_Blocks[0]->_J) {fout<<y<<","<<_Blocks[0]->getU(n)<<endl; y += _Blocks[0]->_DX;}
 }

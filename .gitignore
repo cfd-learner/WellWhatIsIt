@@ -9,6 +9,7 @@
 # Tecplot plt files and txt files
 *.plt
 *.txt
+*.csv
 
 # Windows image file caches
 Thumbs.db

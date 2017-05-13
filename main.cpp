@@ -12,7 +12,7 @@ int main()
     double RHOi= 1.1;
     double RHOo= 1.0;
 
-    Simulation S = Simulation("geo.txt", STEPS, DX0, DT0, TAU, RHOi, RHOo);
+    Simulation S = Simulation("geo.csv", STEPS, DX0, DT0, TAU, RHOi, RHOo);
 
     return 0;
 }
