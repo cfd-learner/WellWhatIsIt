@@ -10,7 +10,7 @@
     (I-1)J  (I-1)J+1  ...  IJ-1
 */
 
-void NodeInternal::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
+void NodeInternal::initNeighbors(vector<Node*>& Nodes, int J, bool test) {
 
     _Neighbors[0] = Nodes[_ID];
     _Neighbors[1] = Nodes[_ID-1];
@@ -23,7 +23,7 @@ void NodeInternal::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
     _Neighbors[8] = Nodes[_ID-J-1];
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";
@@ -32,7 +32,7 @@ void NodeInternal::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
     }
 }
 
-void NodeWall::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
+void NodeWall::initNeighbors(vector<Node*>& Nodes, int J, bool test) {
 
     _Neighbors[0] = Nodes[_ID];
     switch (_NSIDE) {
@@ -67,7 +67,7 @@ void NodeWall::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
     }
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";
@@ -102,7 +102,7 @@ void NodeWall::boundaryConditions(bool test){
     }
 }
 
-void NodePressureEdge::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
+void NodePressureEdge::initNeighbors(vector<Node*>& Nodes, int J, bool test) {
 
     _Neighbors[0] = Nodes[_ID];
     switch (_NSIDE) {
@@ -123,7 +123,7 @@ void NodePressureEdge::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test
     }
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";
@@ -149,7 +149,7 @@ void NodePressureEdge::boundaryConditions(bool test){
     }
 }
 
-void NodePressureCorner::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
+void NodePressureCorner::initNeighbors(vector<Node*>& Nodes, int J, bool test) {
 
     _Neighbors[0] = Nodes[_ID];
     switch (_NSIDE) {
@@ -176,7 +176,7 @@ void NodePressureCorner::initNeighbors(vector<Node*>& Nodes, unsigned J, bool te
     }
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";
@@ -219,7 +219,7 @@ void NodePressureCorner::boundaryConditions(bool test){
     }
 }
 
-void NodeInternalSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
+void NodeInternalSeam::initNeighbors(vector<Node*>& Nodes, int J, bool test) {
 
     _Neighbors[0] = Nodes[_ID];
     switch (_NSIDE) {
@@ -274,7 +274,7 @@ void NodeInternalSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test
     }
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";
@@ -283,7 +283,7 @@ void NodeInternalSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test
     }
 }
 
-void NodeWallSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
+void NodeWallSeam::initNeighbors(vector<Node*>& Nodes, int J, bool test) {
 
     _Neighbors[0] = Nodes[_ID];
     switch (_NSIDE) {
@@ -310,7 +310,7 @@ void NodeWallSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
     }
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";
@@ -345,7 +345,7 @@ void NodeWallSeam::boundaryConditions(bool test){
     }
 }
 
-void NodePressureSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test) {
+void NodePressureSeam::initNeighbors(vector<Node*>& Nodes, int J, bool test) {
 
     _Neighbors[0] = Nodes[_ID];
     switch (_NSIDE) {
@@ -372,7 +372,7 @@ void NodePressureSeam::initNeighbors(vector<Node*>& Nodes, unsigned J, bool test
     }
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";

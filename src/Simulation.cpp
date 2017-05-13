@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-Simulation::Simulation(string geo, unsigned STEPS, double DX0, double DT0, double TAU, double RHOi, double RHOo):
+Simulation::Simulation(string geo, int STEPS, double DX0, double DT0, double TAU, double RHOi, double RHOo):
     _STEPS(STEPS),
     _step(0),
     _DX0(DX0),
@@ -57,15 +57,15 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
         n++;
     }
 
-    for (unsigned n=0; n<_N; n++) _Blocks[n]->initNeighbors(_Blocks, _I, _J);
+    for (int n=0; n<_N; n++) _Blocks[n]->initNeighbors(_Blocks, _I, _J);
 
     if (test) {
         cout<<endl<<_I<<" rows, "<<_J<<" columns, "<<_N<<" total blocks."<<endl;
         cin.get();
         cout<<"Block types:"<<endl;
-        for (unsigned i=0; i<_I; i++)
+        for (int i=0; i<_I; i++)
         {
-            for (unsigned j=0; j<_J; j++)
+            for (int j=0; j<_J; j++)
             {
                 if (_Blocks[i*_J+j]->_TYPE < 10) cout<<" ";
                 cout<<_Blocks[i*_J+j]->_TYPE<<" ";
@@ -74,9 +74,9 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
         }
         cin.get();
         cout<<"Block levels:"<<endl;
-        for (unsigned i=0; i<_I; i++)
+        for (int i=0; i<_I; i++)
         {
-            for (unsigned j=0; j<_J; j++)
+            for (int j=0; j<_J; j++)
             {
                 if (_Blocks[i*_J+j]->_L < 10) cout<<" ";
                 cout<<_Blocks[i*_J+j]->_L<<" ";
@@ -107,7 +107,7 @@ void Simulation::becomeUnstoppable() {
     }
 }
 
-void Simulation::giantsGiantsGiants(unsigned level) {
+void Simulation::giantsGiantsGiants(int level) {
 
     switch (level) {
     case 0:
@@ -151,8 +151,8 @@ void Simulation::everythingYouNeed(Block* Blockjawn, bool test) {
 void Simulation::theLegendNeverDies() {
     ofstream fout("output.csv");
     double y = 0.;
-//    for (unsigned n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<" "<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
-//    for (unsigned n=_Blocks[4]->_J+_J/2; n<_Blocks[4]->_N; n+=_Blocks[4]->_J) {fout<<y<<" "<<_Blocks[4]->getU(n)<<endl; y += _Blocks[4]->_DX;}
-//    for (unsigned n=_Blocks[7]->_J+_J/2; n<_Blocks[7]->_N; n+=_Blocks[7]->_J) {fout<<y<<" "<<_Blocks[7]->getU(n)<<endl; y += _Blocks[7]->_DX;}
-    for (unsigned n=_Blocks[0]->_J/2; n<_Blocks[0]->_N; n+=_Blocks[0]->_J) {fout<<y<<","<<_Blocks[0]->getU(n)<<endl; y += _Blocks[0]->_DX;}
+//    for (int n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<" "<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
+//    for (int n=_Blocks[4]->_J+_J/2; n<_Blocks[4]->_N; n+=_Blocks[4]->_J) {fout<<y<<" "<<_Blocks[4]->getU(n)<<endl; y += _Blocks[4]->_DX;}
+//    for (int n=_Blocks[7]->_J+_J/2; n<_Blocks[7]->_N; n+=_Blocks[7]->_J) {fout<<y<<" "<<_Blocks[7]->getU(n)<<endl; y += _Blocks[7]->_DX;}
+    for (int n=_Blocks[0]->_J/2; n<_Blocks[0]->_N; n+=_Blocks[0]->_J) {fout<<y<<","<<_Blocks[0]->getU(n)<<endl; y += _Blocks[0]->_DX;}
 }

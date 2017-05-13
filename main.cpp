@@ -1,11 +1,11 @@
 #include "Simulation.h"
 
-unsigned K = 9;
+int K = 9;
 double C = 1.;
 
 int main()
 {
-    unsigned STEPS = 2000;
+    int STEPS = 1000;
     double DX0 = 1.0;
     double DT0 = 1.0;
     double TAU = 0.6;

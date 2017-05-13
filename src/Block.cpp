@@ -11,7 +11,7 @@
     (I-1)J  (I-1)J+1  ...  IJ-1
 */
 
-Block::Block(unsigned ID, unsigned TYPE, unsigned L, unsigned I, unsigned J, double DX0, double DT0, double TAU, double RHOi, double RHOo):
+Block::Block(int ID, int TYPE, int L, int I, int J, double DX0, double DT0, double TAU, double RHOi, double RHOo):
     _ID(ID),
     _TYPE(TYPE),
     _L(L),
@@ -32,7 +32,7 @@ Block::Block(unsigned ID, unsigned TYPE, unsigned L, unsigned I, unsigned J, dou
         initNodes(TYPE, RHOi, RHOo);
     }
 
-void Block::initNeighbors(vector<Block*>& Blocks, unsigned I, unsigned J, bool test) {
+void Block::initNeighbors(vector<Block*>& Blocks, int I, int J, bool test) {
 
     _Neighbors[0] = Blocks[_ID];
     if (_ID%J != 0) _Neighbors[1] = Blocks[_ID-1];
@@ -45,7 +45,7 @@ void Block::initNeighbors(vector<Block*>& Blocks, unsigned I, unsigned J, bool t
     if (_Neighbors[4] && _Neighbors[1]) _Neighbors[8] = Blocks[_ID-J-1];
 
     if (test) {
-        for (unsigned k=0; k<K; k++) {
+        for (int k=0; k<K; k++) {
             if (_Neighbors[k] && _Neighbors[k]->_ID < 10) cout<<" "<<_Neighbors[k]->_ID<<" ";
             else if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";
             else cout<<" _ ";
@@ -76,9 +76,9 @@ void Block::initE() {
     _Ey[8] = -_C;
 }
 
-void Block::initNodes(unsigned TYPE, double RHOi, double RHOo, bool test) {
+void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
 
-    unsigned n = 0;
+    int n = 0;
     switch (TYPE) {
     case 0: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
@@ -238,14 +238,14 @@ void Block::initNodes(unsigned TYPE, double RHOi, double RHOo, bool test) {
         } break;
     }
 
-    for (unsigned n=0; n<_N; n++) {
+    for (int n=0; n<_N; n++) {
         if (n%_J == 0) _Edge1.push_back(_Nodes[n]);
         if (n >= (_I-1)*_J) _Edge2.push_back(_Nodes[n]);
         if ((n+1)%_J == 0) _Edge3.push_back(_Nodes[n]);
         if (n < _J) _Edge4.push_back(_Nodes[n]);
     }
 
-    for (unsigned n=0; n<_N; n++) {
+    for (int n=0; n<_N; n++) {
         _Nodes[n]->initNeighbors(_Nodes, _J);
         _Nodes[n]->calcFeq(_C, _W, _Ex, _Ey);
         _Nodes[n]->initF();
@@ -256,18 +256,18 @@ void Block::initNodes(unsigned TYPE, double RHOi, double RHOo, bool test) {
 
 void Block::allStream() {
 
-    for (unsigned n=0; n<_N; n++) {
+    for (int n=0; n<_N; n++) {
         _Nodes[n]->stream(0, _TAU);
         _Nodes[n]->stream(2, _TAU);
         _Nodes[n]->stream(3, _TAU);
         _Nodes[n]->stream(5, _TAU);
         _Nodes[n]->stream(6, _TAU);
     }
-    for (unsigned n=_N; n>=1; n--) {
-        _Nodes[n-1]->stream(1, _TAU);
-        _Nodes[n-1]->stream(4, _TAU);
-        _Nodes[n-1]->stream(7, _TAU);
-        _Nodes[n-1]->stream(8, _TAU);
+    for (int n=_N-1; n>=0; n--) {
+        _Nodes[n]->stream(1, _TAU);
+        _Nodes[n]->stream(4, _TAU);
+        _Nodes[n]->stream(7, _TAU);
+        _Nodes[n]->stream(8, _TAU);
     }
 }
 
@@ -285,10 +285,10 @@ void Block::allSeams() {
 
 }
 
-void Block::fillSeam(vector<Node*> Edge, vector<Node*> Edge2, unsigned k1, unsigned k2, unsigned k3) {
+void Block::fillSeam(vector<Node*> Edge, vector<Node*> Edge2, int k1, int k2, int k3) {
 
-    unsigned nratio;
-    double jawn1, jawn2; unsigned njawn; //junk variables
+    int nratio;
+    double jawn1, jawn2; int njawn; //junk variables
     if (Edge.size() <= Edge2.size()) { //receiving edge has less/same # of nodes
         nratio = (Edge2.size()-1) / (Edge.size()-1);
         for (unsigned n=0; n<Edge.size(); n++) {
