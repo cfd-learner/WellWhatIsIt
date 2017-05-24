@@ -96,6 +96,15 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
         cout<<"Level 3:"; if (_BL3.size() == 0) cout<<" none"; cout<<endl;
         for (unsigned n=0; n<_BL3.size(); n++) cout<<_BL3[n]->_ID<<endl;
         cin.get();
+        cout<<"Neighbors:"<<endl;
+        for (unsigned n=0; n<_Blocks.size(); n++) {
+            for (int k=0; k<K; k++) {
+                if (_Blocks[n]->getNeighbor(k)) cout<<_Blocks[n]->getNeighbor(k)->_ID<<" ";
+                else cout<<"_ ";
+            }
+            cout<<endl;
+        }
+        cin.get();
     }
 }
 

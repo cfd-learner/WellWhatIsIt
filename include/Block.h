@@ -21,6 +21,7 @@ class Block
         void allFeq() {for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->calcFeq(_C, _W, _Ex, _Ey);};
 
         Node* getNode(int n) {return _Nodes[n];};
+        Block* getNeighbor(int k) {return _Neighbors[k];};
         double getU(int n) {return _Nodes[n]->getU();};
 
         const int _ID, _TYPE, _L, _I, _J, _N;
