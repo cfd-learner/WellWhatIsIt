@@ -80,7 +80,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
 
     int n = 0;
     switch (TYPE) {
-        
+
     //internal seams on all sides
     case 0: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
@@ -94,7 +94,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //wall along top edge, internal otherwise
     case 2: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
@@ -108,7 +108,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //wall along bottom edge, internal otherwise
     case 4: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
@@ -122,7 +122,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //pressure outlet along right edge, internal otherwise
     case 11: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
@@ -136,7 +136,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //pressure inlet along left edge, internal otherwise
     case 13: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi));
@@ -150,7 +150,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //wall along top, pressure outlet along right, internal otherwise
     case 15: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
@@ -164,7 +164,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //wall along top, pressure inlet along left, internal otherwise
     case 16: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
@@ -178,7 +178,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //wall along bottom, pressure inlet along left, internal otherwise
     case 17: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi));
@@ -192,7 +192,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //wall along bottom, pressure outlet along right, internal otherwise
     case 18: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
@@ -206,7 +206,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //walls along top and bottom, internal otherwise
     case 24: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
@@ -220,7 +220,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //walls along top and bottom, pressure outlet along right, internal left
     case 111: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
@@ -234,7 +234,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //walls along top and bottom, pressure inlet along left, internal right
     case 333: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
@@ -248,7 +248,7 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
-        
+
     //walls along top and bottom, pressure inlet left, pressure outlet right
     case 999: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
@@ -265,10 +265,10 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
     }
 
     for (int n=0; n<_N; n++) {
-        if (n%_J == 0) _Edge1.push_back(_Nodes[n]);
-        if (n >= (_I-1)*_J) _Edge2.push_back(_Nodes[n]);
-        if ((n+1)%_J == 0) _Edge3.push_back(_Nodes[n]);
-        if (n < _J) _Edge4.push_back(_Nodes[n]);
+        if ((n+1)%_J == 0) _Edge1.push_back(_Nodes[n]);
+        if (n < _J) _Edge2.push_back(_Nodes[n]);
+        if (n%_J == 0) _Edge3.push_back(_Nodes[n]);
+        if (n >= (_I-1)*_J) _Edge4.push_back(_Nodes[n]);
     }
 
     for (int n=0; n<_N; n++) {
@@ -309,15 +309,15 @@ void Block::allStream() {
 
 void Block::allSeams() {
 
-    if (_Neighbors[1]) fillSeam(_Edge1, _Neighbors[1]->_Edge3, 1, 5, 8);
-    if (_Neighbors[2]) fillSeam(_Edge2, _Neighbors[2]->_Edge4, 2, 5, 6);
-    if (_Neighbors[3]) fillSeam(_Edge3, _Neighbors[3]->_Edge1, 3, 6, 7);
-    if (_Neighbors[4]) fillSeam(_Edge4, _Neighbors[4]->_Edge2, 4, 7, 8);
+    if (_Neighbors[1]) fillSeam(_Edge3, _Neighbors[1]->_Edge1, 1, 5, 8);
+    if (_Neighbors[2]) fillSeam(_Edge4, _Neighbors[2]->_Edge2, 2, 5, 6);
+    if (_Neighbors[3]) fillSeam(_Edge1, _Neighbors[3]->_Edge3, 3, 6, 7);
+    if (_Neighbors[4]) fillSeam(_Edge2, _Neighbors[4]->_Edge4, 4, 7, 8);
 
-    if (_Neighbors[5]) _Edge1.back()->setF( 5, _Neighbors[5]->_Edge3[0]->getF(5) );
-    if (_Neighbors[6]) _Edge3.back()->setF( 6, _Neighbors[6]->_Edge1[0]->getF(6) );
-    if (_Neighbors[7]) _Edge3[0]->setF( 7, _Neighbors[7]->_Edge1.back()->getF(7) );
-    if (_Neighbors[8]) _Edge1[0]->setF( 8, _Neighbors[8]->_Edge3.back()->getF(8) );
+    if (_Neighbors[5]) _Edge3.back()->setF( 5, _Neighbors[5]->_Edge1[0]->getF(5) );
+    if (_Neighbors[6]) _Edge1.back()->setF( 6, _Neighbors[6]->_Edge3[0]->getF(6) );
+    if (_Neighbors[7]) _Edge1[0]->setF( 7, _Neighbors[7]->_Edge3.back()->getF(7) );
+    if (_Neighbors[8]) _Edge3[0]->setF( 8, _Neighbors[8]->_Edge1.back()->getF(8) );
 
 }
 
