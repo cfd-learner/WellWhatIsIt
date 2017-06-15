@@ -80,6 +80,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
 
     int n = 0;
     switch (TYPE) {
+        
+    //internal seams on all sides
     case 0: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
@@ -92,6 +94,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //wall along top edge, internal otherwise
     case 2: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
@@ -104,6 +108,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //wall along bottom edge, internal otherwise
     case 4: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
@@ -116,6 +122,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //pressure outlet along right edge, internal otherwise
     case 11: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodePressureSeam(n, 5, 1, RHOo));
@@ -128,6 +136,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //pressure inlet along left edge, internal otherwise
     case 13: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi));
             else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
@@ -140,6 +150,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //wall along top, pressure outlet along right, internal otherwise
     case 15: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo));
@@ -152,6 +164,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //wall along top, pressure inlet along left, internal otherwise
     case 16: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
             else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
@@ -164,6 +178,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //wall along bottom, pressure inlet along left, internal otherwise
     case 17: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi));
             else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
@@ -176,6 +192,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //wall along bottom, pressure outlet along right, internal otherwise
     case 18: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodePressureSeam(n, 5, 1, RHOo));
@@ -188,6 +206,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //walls along top and bottom, internal otherwise
     case 24: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
@@ -200,6 +220,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //walls along top and bottom, pressure outlet along right, internal left
     case 111: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
             else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo));
@@ -212,6 +234,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //walls along top and bottom, pressure inlet along left, internal right
     case 333: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
             else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
@@ -224,6 +248,8 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
             else _Nodes.push_back(new NodeInternal(n, RHOo));
             n++;
         } break;
+        
+    //walls along top and bottom, pressure inlet left, pressure outlet right
     case 999: while (n < _N) {
             if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
             else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo));
@@ -252,6 +278,16 @@ void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
     }
 
     if (test) for (unsigned n=0; n<_Nodes.size(); n++) _Nodes[n]->printInfo();
+//    if (test) {
+//        cout<<"Edge 1 nodes:"<<endl;
+//        for (unsigned n=0; n<_Edge1.size(); n++) cout<<_Edge1[n]->_ID<<endl;
+//        cout<<"Edge 2 nodes:"<<endl;
+//        for (unsigned n=0; n<_Edge2.size(); n++) cout<<_Edge2[n]->_ID<<endl;
+//        cout<<"Edge 3 nodes:"<<endl;
+//        for (unsigned n=0; n<_Edge3.size(); n++) cout<<_Edge3[n]->_ID<<endl;
+//        cout<<"Edge 4 nodes:"<<endl;
+//        for (unsigned n=0; n<_Edge4.size(); n++) cout<<_Edge4[n]->_ID<<endl;
+//    }
 }
 
 void Block::allStream() {

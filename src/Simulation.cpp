@@ -163,5 +163,6 @@ void Simulation::theLegendNeverDies() {
 //    for (int n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<" "<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
 //    for (int n=_Blocks[4]->_J+_J/2; n<_Blocks[4]->_N; n+=_Blocks[4]->_J) {fout<<y<<" "<<_Blocks[4]->getU(n)<<endl; y += _Blocks[4]->_DX;}
 //    for (int n=_Blocks[7]->_J+_J/2; n<_Blocks[7]->_N; n+=_Blocks[7]->_J) {fout<<y<<" "<<_Blocks[7]->getU(n)<<endl; y += _Blocks[7]->_DX;}
-    for (int n=_Blocks[0]->_J/2; n<_Blocks[0]->_N; n+=_Blocks[0]->_J) {fout<<y<<","<<_Blocks[0]->getU(n)<<endl; y += _Blocks[0]->_DX;}
+    for (int n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<","<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
+//    for (int n=_Blocks[0]->_J/2; n<_Blocks[0]->_N; n+=_Blocks[0]->_J) {fout<<y<<","<<_Blocks[0]->getU(n)<<endl; y += _Blocks[0]->_DX;}
 }
