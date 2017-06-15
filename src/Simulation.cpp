@@ -84,19 +84,19 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
             cout<<endl;
         }
         cin.get();
-        cout<<"Level 0:"; if (_BL0.size() == 0) cout<<" none"; cout<<endl;
+        cout<<"Level 0:"<<endl; if (_BL0.size() == 0) cout<<"none"<<endl;
         for (unsigned n=0; n<_BL0.size(); n++) cout<<_BL0[n]->_ID<<endl;
         cin.get();
-        cout<<"Level 1:"; if (_BL1.size() == 0) cout<<" none"; cout<<endl;
+        cout<<"Level 1:"<<endl; if (_BL1.size() == 0) cout<<"none"<<endl;
         for (unsigned n=0; n<_BL1.size(); n++) cout<<_BL1[n]->_ID<<endl;
         cin.get();
-        cout<<"Level 2:"; if (_BL2.size() == 0) cout<<" none"; cout<<endl;
+        cout<<"Level 2:"<<endl; if (_BL2.size() == 0) cout<<"none"<<endl;
         for (unsigned n=0; n<_BL2.size(); n++) cout<<_BL2[n]->_ID<<endl;
         cin.get();
-        cout<<"Level 3:"; if (_BL3.size() == 0) cout<<" none"; cout<<endl;
+        cout<<"Level 3:"<<endl; if (_BL3.size() == 0) cout<<"none";
         for (unsigned n=0; n<_BL3.size(); n++) cout<<_BL3[n]->_ID<<endl;
         cin.get();
-        cout<<"Neighbors:"<<endl;
+        cout<<endl<<"Neighbors:"<<endl;
         for (unsigned n=0; n<_Blocks.size(); n++) {
             for (int k=0; k<K; k++) {
                 if (_Blocks[n]->getNeighbor(k)) cout<<_Blocks[n]->getNeighbor(k)->_ID<<" ";
