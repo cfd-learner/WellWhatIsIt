@@ -2,6 +2,9 @@
 *.o
 *.exe
 
+# Python compiled files
+*.pyc
+
 # Code::Blocks extra files (.cbp project file still included)
 *.depend
 *.layout
