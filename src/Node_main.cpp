@@ -12,13 +12,15 @@
     (I-1)J  (I-1)J+1  ...  IJ-1
 */
 
-Node::Node(int ID, int NSIDE, int BSIDE, double rho):
+Node::Node(int ID, int NSIDE, int BSIDE, double rho, double x, double y):
     _ID(ID),
     _NSIDE(NSIDE),
     _BSIDE(BSIDE),
     _rho(rho),
     _u(0),
     _v(0),
+    _x(x),
+    _y(y),
     _ISFIXEDRHO(false),
     _ISFIXEDU(false),
     _ISFIXEDV(false),
@@ -89,6 +91,7 @@ void Node::calcV(vector<double>& Ey, bool test) {
 void Node::printInfo() {
     cout<<"Node "<<_ID<<endl;
     cout<<"  Address: "<<this<<endl;
+    cout<<"   Coords: "<<_x<<", "<<_y<<endl;
     cout<<"  Neighbs: ";
     for (int k=0; k<K; k++) {
         if (_Neighbors[k]) cout<<_Neighbors[k]->_ID<<" ";

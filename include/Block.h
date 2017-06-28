@@ -6,7 +6,7 @@
 class Block
 {
     public:
-        Block(int ID, int TYPE, int L, int I, int J, double DX0, double DT0, double TAU, double RHOi, double RHOo);
+        Block(int ID, int TYPE, int L, int I, int J, double X0, double Y0, double DX0, double DT0, double TAU, double RHOi, double RHOo);
         void initNeighbors(vector<Block*>& Blocks, int I, int J, bool test=false);
         void initW();
         void initE();
@@ -25,7 +25,7 @@ class Block
         double getU(int n) {return _Nodes[n]->getU();};
 
         const int _ID, _TYPE, _L, _I, _J, _N;
-        const double _DX, _DT, _C, _TAU;
+        const double _X0, _Y0, _DX, _DT, _C, _TAU;
 
     private:
         vector<double> _Ex, _Ey, _W;

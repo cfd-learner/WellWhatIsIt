@@ -11,13 +11,15 @@
     (I-1)J  (I-1)J+1  ...  IJ-1
 */
 
-Block::Block(int ID, int TYPE, int L, int I, int J, double DX0, double DT0, double TAU, double RHOi, double RHOo):
+Block::Block(int ID, int TYPE, int L, int I, int J, double X0, double Y0, double DX0, double DT0, double TAU, double RHOi, double RHOo):
     _ID(ID),
     _TYPE(TYPE),
     _L(L),
     _I(I),
     _J(J),
     _N(I*J),
+    _X0(X0),
+    _Y0(Y0),
     _DX(DX0/pow(2,L)),
     _DT(DT0/pow(2,L)),
     _C(DX0/DT0),
@@ -79,187 +81,227 @@ void Block::initE() {
 void Block::initNodes(int TYPE, double RHOi, double RHOo, bool test) {
 
     int n = 0;
+    double x = _X0, y = _Y0;
     switch (TYPE) {
 
     //internal seams on all sides
     case 0: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, RHOo, 4));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //wall along top edge, internal otherwise
     case 2: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //wall along bottom edge, internal otherwise
     case 4: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //pressure outlet along right edge, internal otherwise
     case 11: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodePressureSeam(n, 5, 1, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodePressureSeam(n, 8, 1, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodePressureSeam(n, 5, 1, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodePressureSeam(n, 8, 1, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //pressure inlet along left edge, internal otherwise
     case 13: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi));
-            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureSeam(n, 7, 3, RHOi));
-            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureSeam(n, 7, 3, RHOi, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //wall along top, pressure outlet along right, internal otherwise
     case 15: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodePressureSeam(n, 8, 1, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 7, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodePressureSeam(n, 8, 1, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //wall along top, pressure inlet along left, internal otherwise
     case 16: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
-            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureSeam(n, 7, 3, RHOi));
-            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureSeam(n, 7, 3, RHOi, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeInternalSeam(n, 8, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeInternalSeam(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //wall along bottom, pressure inlet along left, internal otherwise
     case 17: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi));
-            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureCorner(n, 7, RHOi));
-            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodePressureSeam(n, 6, 3, RHOi, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeInternalSeam(n, 5, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureCorner(n, 7, RHOi, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //wall along bottom, pressure outlet along right, internal otherwise
     case 18: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodePressureSeam(n, 5, 1, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodePressureCorner(n, 8, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeInternalSeam(n, 6, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodePressureSeam(n, 5, 1, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodePressureCorner(n, 8, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeInternalSeam(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //walls along top and bottom, internal otherwise
     case 24: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //walls along top and bottom, pressure outlet along right, internal left
     case 111: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo));
-            else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo));
-            else if (n == _N-1) _Nodes.push_back(new NodePressureCorner(n, 8, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodeWallSeam(n, 6, 2, RHOo, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodeWallSeam(n, 7, 4, RHOo, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodePressureCorner(n, 8, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 3, RHOo, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //walls along top and bottom, pressure inlet along left, internal right
     case 333: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
-            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureCorner(n, 7, RHOi));
-            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodeWallSeam(n, 5, 2, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureCorner(n, 7, RHOi, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodeWallSeam(n, 8, 4, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodeInternalSeam(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
 
     //walls along top and bottom, pressure inlet left, pressure outlet right
     case 999: while (n < _N) {
-            if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi));
-            else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo));
-            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureCorner(n, 7, RHOi));
-            else if (n == _N-1) _Nodes.push_back(new NodePressureCorner(n, 8, RHOo));
-            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo));
-            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo));
-            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi));
-            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo));
-            else _Nodes.push_back(new NodeInternal(n, RHOo));
+            if (n == 0) _Nodes.push_back(new NodePressureCorner(n, 6, RHOi, x, y));
+            else if (n == _J-1) _Nodes.push_back(new NodePressureCorner(n, 5, RHOo, x, y));
+            else if (n == (_I-1)*_J) _Nodes.push_back(new NodePressureCorner(n, 7, RHOi, x, y));
+            else if (n == _N-1) _Nodes.push_back(new NodePressureCorner(n, 8, RHOo, x, y));
+            else if (n < _J-1) _Nodes.push_back(new NodeWall(n, 2, RHOo, x, y));
+            else if (n > (_I-1)*_J) _Nodes.push_back(new NodeWall(n, 4, RHOo, x, y));
+            else if (n%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 3, RHOi, x, y));
+            else if ((n+1)%_J == 0) _Nodes.push_back(new NodePressureEdge(n, 1, RHOo, x, y));
+            else _Nodes.push_back(new NodeInternal(n, RHOo, x, y));
+
+            if ((n+1)%_J == 0) {x = _X0; y -= _DX;}
+            else x += _DX;
             n++;
         } break;
     }

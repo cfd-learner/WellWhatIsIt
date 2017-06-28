@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 Simulation::Simulation(string geo, int STEPS, double DX0, double DT0, double TAU, double RHOi, double RHOo):
     _STEPS(STEPS),
@@ -15,7 +16,6 @@ Simulation::Simulation(string geo, int STEPS, double DX0, double DT0, double TAU
     {
         whatAreYouCasul(geo, true);
         becomeUnstoppable();
-        theLegendNeverDies();
     }
 
 void Simulation::whatAreYouCasul(string geometry_path, bool test) {
@@ -33,28 +33,51 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
     stringstream(jjawn)>>_J;
     _N = _I * _J;
 
-    int n = 0, type, level, i, j;
+    vector<int> type(_N), level(_N), i(_N), j(_N);
+    int n = 0;
     while (getline(Geo_in, linejawn)) {
         typejawn.clear(); leveljawn.clear(); ijawn.clear(); jjawn.clear();
         c = 0;
-        while (linejawn[c] != ',') {typejawn += linejawn[c]; c++;} c++;
-        stringstream(typejawn)>>type;
-        while (linejawn[c] != ',') {leveljawn += linejawn[c]; c++;} c++;
-        stringstream(leveljawn)>>level;
-        while (linejawn[c] != ',') {ijawn += linejawn[c]; c++;} c++;
-        stringstream(ijawn)>>i;
-        while (c < linejawn.size()) {jjawn += linejawn[c]; c++;}
-        stringstream(jjawn)>>j;
 
-        _Blocks.push_back(new Block(n, type, level, i, j, _DX0, _DT0, _TAU, _RHOi, _RHOo));
-        if (test) {
-            cout<<endl<<"Block "<<n<<", Type "<<type<<", Level "<<level<<", I "<<i<<", J "<<j;
-        }
-        if (level == 0) _BL0.push_back(_Blocks[n]);
-        else if (level == 1) _BL1.push_back(_Blocks[n]);
-        else if (level == 2) _BL2.push_back(_Blocks[n]);
-        else if (level == 3) _BL3.push_back(_Blocks[n]);
+        while (linejawn[c] != ',') {typejawn += linejawn[c]; c++;} c++;
+        stringstream(typejawn)>>type[n];
+        while (linejawn[c] != ',') {leveljawn += linejawn[c]; c++;} c++;
+        stringstream(leveljawn)>>level[n];
+        while (linejawn[c] != ',') {ijawn += linejawn[c]; c++;} c++;
+        stringstream(ijawn)>>i[n];
+        while (c < linejawn.size()) {jjawn += linejawn[c]; c++;}
+        stringstream(jjawn)>>j[n];
         n++;
+    }
+
+    //find width and height of each block in lattice units
+    vector<double> width(_N), height(_N);
+    double totalwidth = 0;
+    for (int n=0; n<_N; n++) {
+        width[n] = (j[n]-1) * _DX0 / pow(2, level[n]);
+        height[n] = (i[n]-1) * _DX0 / pow(2, level[n]);
+        if (n < _J) totalwidth += width[n];
+    }
+
+    //use width, height, and totalwidth to determine X0 and Y0 (X-Y coordinates of Node 0 in block)
+    vector<double> x0(_N), y0(_N);
+    double x = 0, y = 0;
+    for (int n=_N-1; n>=0; n--) {
+        if ((n+1)%_J == 0) {y += height[n]; x = totalwidth;}
+        x -= width[n];
+        x0[n] = x; y0[n] = y;
+    }
+
+    for (int n=0; n<_N; n++) {
+
+        _Blocks.push_back(new Block(n, type[n], level[n], i[n], j[n], x0[n], y0[n], _DX0, _DT0, _TAU, _RHOi, _RHOo));
+        if (test) {
+            cout<<endl<<"Block "<<n<<", Type "<<type[n]<<", Level "<<level[n]<<", I "<<i[n]<<", J "<<j[n]<<", X0 "<<x0[n]<<", Y0 "<<y0[n];
+        }
+        if (level[n] == 0) _BL0.push_back(_Blocks[n]);
+        else if (level[n] == 1) _BL1.push_back(_Blocks[n]);
+        else if (level[n] == 2) _BL2.push_back(_Blocks[n]);
+        else if (level[n] == 3) _BL3.push_back(_Blocks[n]);
     }
 
     for (int n=0; n<_N; n++) _Blocks[n]->initNeighbors(_Blocks, _I, _J);
@@ -110,10 +133,12 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
 
 void Simulation::becomeUnstoppable() {
     while (_step < _STEPS) {
+        theLegendNeverDies();
         giantsGiantsGiants(0);
         _step++;
         cout<<_step<<endl;
     }
+    theLegendNeverDies();
 }
 
 void Simulation::giantsGiantsGiants(int level) {
@@ -158,11 +183,11 @@ void Simulation::everythingYouNeed(Block* Blockjawn, bool test) {
 }
 
 void Simulation::theLegendNeverDies() {
-    ofstream fout("output.csv");
-    double y = 0.;
-//    for (int n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<" "<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
-//    for (int n=_Blocks[4]->_J+_J/2; n<_Blocks[4]->_N; n+=_Blocks[4]->_J) {fout<<y<<" "<<_Blocks[4]->getU(n)<<endl; y += _Blocks[4]->_DX;}
-//    for (int n=_Blocks[7]->_J+_J/2; n<_Blocks[7]->_N; n+=_Blocks[7]->_J) {fout<<y<<" "<<_Blocks[7]->getU(n)<<endl; y += _Blocks[7]->_DX;}
-    for (int n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<","<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
-//    for (int n=_Blocks[0]->_J/2; n<_Blocks[0]->_N; n+=_Blocks[0]->_J) {fout<<y<<","<<_Blocks[0]->getU(n)<<endl; y += _Blocks[0]->_DX;}
+    ostringstream fileNameStream;
+    string fileNameString;
+    ofstream fout;
+
+    //fileNameStream<<"
+
+//    for (int n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<","<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
 }
