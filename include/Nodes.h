@@ -28,9 +28,10 @@ class Node {
         double getU() {return _u;};
 
         const int _ID, _NSIDE, _BSIDE;
+        const double _x, _y;
 
     protected:
-        double _rho, _u, _v, _x, _y;
+        double _rho, _u, _v;
         bool _ISFIXEDRHO, _ISFIXEDU, _ISFIXEDV;
         vector<double> _f, _feq;
         vector<Node*> _Neighbors;
