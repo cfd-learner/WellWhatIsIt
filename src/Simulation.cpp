@@ -133,7 +133,7 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
 
 void Simulation::becomeUnstoppable() {
     while (_step < _STEPS) {
-        theLegendNeverDies();
+//        theLegendNeverDies();
         giantsGiantsGiants(0);
         _step++;
         cout<<_step<<endl;
@@ -185,9 +185,29 @@ void Simulation::everythingYouNeed(Block* Blockjawn, bool test) {
 void Simulation::theLegendNeverDies() {
     ostringstream fileNameStream;
     string fileNameString;
-    ofstream fout;
+    ofstream Rhoout, Uout, Vout;
 
-    //fileNameStream<<"
+    fileNameStream<<"output/rho/"<<_step<<".csv";
+    fileNameString = fileNameStream.str();
+    fileNameStream.flush();
+    Rhoout.open(fileNameString.c_str());
 
-//    for (int n=_Blocks[1]->_J/2; n<_Blocks[1]->_N; n+=_Blocks[1]->_J) {fout<<y<<","<<_Blocks[1]->getU(n)<<endl; y += _Blocks[1]->_DX;}
+    fileNameStream<<"output/u/"<<_step<<".csv";
+    fileNameString = fileNameStream.str();
+    fileNameStream.flush();
+    Uout.open(fileNameString.c_str());
+
+    fileNameStream<<"output/v/"<<_step<<".csv";
+    fileNameString = fileNameStream.str();
+    fileNameStream.flush();
+    Vout.open(fileNameString.c_str());
+
+    for (int nb=0; nb<_N; nb++) {
+        for (int nn=0; nn<_Blocks[nb]->_N; nn++) {
+            Rhoout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getRho(nn)<<endl;
+            Uout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getU(nn)<<endl;
+            Vout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getV(nn)<<endl;
+        }
+    }
+    Rhoout.close(); Uout.close(); Vout.close();
 }

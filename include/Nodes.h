@@ -25,7 +25,11 @@ class Node {
 
         void setF(int k, double f) {_f[k] = f;};
         double getF(int k) {return _f[k];};
+        double getX() {return _x;};
+        double getY() {return _y;};
+        double getRho() {return _rho;};
         double getU() {return _u;};
+        double getV() {return _v;};
 
         const int _ID, _NSIDE, _BSIDE;
         const double _x, _y;

@@ -22,7 +22,11 @@ class Block
 
         Node* getNode(int n) {return _Nodes[n];};
         Block* getNeighbor(int k) {return _Neighbors[k];};
+        double getX(int n) {return _Nodes[n]->getX();};
+        double getY(int n) {return _Nodes[n]->getY();};
+        double getRho(int n) {return _Nodes[n]->getRho();};
         double getU(int n) {return _Nodes[n]->getU();};
+        double getV(int n) {return _Nodes[n]->getV();};
 
         const int _ID, _TYPE, _L, _I, _J, _N;
         const double _X0, _Y0, _DX, _DT, _C, _TAU;
