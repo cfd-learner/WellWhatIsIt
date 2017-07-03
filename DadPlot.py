@@ -18,7 +18,7 @@ def scatter2D(filename):
     plt.plot(x, y, ':')
     plt.show()
 
-def contour2D(filename, titlestring):
+def contour2D(filename, titlestring, xtickarray, ytickarray):
 
     x = []
     y = []
@@ -38,11 +38,16 @@ def contour2D(filename, titlestring):
 
     plt.figure()
     plt.title(titlestring)
-    plt.contourf(X, Y, Z)
+    plt.xticks(xtickarray)
+    plt.yticks(ytickarray)
+    plt.grid(b = True, which = 'major', color = 'k', linestyle = '-')
+    plt.contourf(X, Y, Z, cmap = 'jet')
     plt.show()
 
 if __name__ == "__main__":
-    step = 1000
-    contour2D("output/rho/" + str(step) + ".csv", "Rho")
-    contour2D("output/u/" + str(step) + ".csv", "U")
-    contour2D("output/v/" + str(step) + ".csv", "V")
+    step = 2000
+    xtickarray = [0, 70, 140, 210]
+    ytickarray = [0, 16, 32, 48]
+    contour2D("output/rho/" + str(step) + ".csv", "Rho", xtickarray, ytickarray)
+    contour2D("output/u/" + str(step) + ".csv", "U", xtickarray, ytickarray)
+    contour2D("output/v/" + str(step) + ".csv", "V", xtickarray, ytickarray)
