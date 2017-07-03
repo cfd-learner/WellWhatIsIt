@@ -18,7 +18,7 @@ def scatter2D(filename):
     plt.plot(x, y, ':')
     plt.show()
 
-def contour2D(filename):
+def contour2D(filename, titlestring):
 
     x = []
     y = []
@@ -37,10 +37,12 @@ def contour2D(filename):
     X, Y = np.meshgrid(xi, yi)
 
     plt.figure()
+    plt.title(titlestring)
     plt.contourf(X, Y, Z)
     plt.show()
 
 if __name__ == "__main__":
-    contour2D("output/rho/1000.csv")
-    contour2D("output/u/1000.csv")
-    contour2D("output/v/1000.csv")
+    step = 1000
+    contour2D("output/rho/" + str(step) + ".csv", "Rho")
+    contour2D("output/u/" + str(step) + ".csv", "U")
+    contour2D("output/v/" + str(step) + ".csv", "V")
