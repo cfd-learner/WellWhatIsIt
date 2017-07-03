@@ -5,8 +5,9 @@
 #include <sstream>
 #include <cmath>
 
-Simulation::Simulation(string geo, int STEPS, double DX0, double DT0, double TAU, double RHOi, double RHOo):
+Simulation::Simulation(string geo, int STEPS, int SNAPSHOT, double DX0, double DT0, double TAU, double RHOi, double RHOo):
     _STEPS(STEPS),
+    _SNAPSHOT(SNAPSHOT),
     _step(0),
     _DX0(DX0),
     _DT0(DT0),
@@ -133,7 +134,7 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
 
 void Simulation::becomeUnstoppable() {
     while (_step < _STEPS) {
-//        theLegendNeverDies();
+        if (_step % _SNAPSHOT == 0) theLegendNeverDies();
         giantsGiantsGiants(0);
         _step++;
         cout<<_step<<endl;
@@ -189,17 +190,17 @@ void Simulation::theLegendNeverDies() {
 
     fileNameStream<<"output/rho/"<<_step<<".csv";
     fileNameString = fileNameStream.str();
-    fileNameStream.flush();
+    fileNameStream.str("");
     Rhoout.open(fileNameString.c_str());
 
     fileNameStream<<"output/u/"<<_step<<".csv";
     fileNameString = fileNameStream.str();
-    fileNameStream.flush();
+    fileNameStream.str("");
     Uout.open(fileNameString.c_str());
 
     fileNameStream<<"output/v/"<<_step<<".csv";
     fileNameString = fileNameStream.str();
-    fileNameStream.flush();
+    fileNameStream.str("");
     Vout.open(fileNameString.c_str());
 
     for (int nb=0; nb<_N; nb++) {
