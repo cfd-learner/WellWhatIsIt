@@ -21,6 +21,7 @@ class Simulation
         int _step, _I, _J, _N;
         double _DX0, _DT0, _TAU, _RHOi, _RHOo;
         vector<Block*> _Blocks, _BL0, _BL1, _BL2, _BL3;
+        vector< vector<double> > _Uall, _Vall;
 };
 
 #endif // SIMULATION_H

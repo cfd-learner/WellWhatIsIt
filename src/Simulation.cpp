@@ -13,7 +13,9 @@ Simulation::Simulation(string geo, int STEPS, int SNAPSHOT, double DX0, double D
     _DT0(DT0),
     _TAU(TAU),
     _RHOi(RHOi),
-    _RHOo(RHOo)
+    _RHOo(RHOo),
+    _Uall(2, vector<double>(0, 0)),
+    _Vall(2, vector<double>(0, 0))
     {
         whatAreYouCasul(geo, true);
         becomeUnstoppable();
@@ -186,7 +188,7 @@ void Simulation::everythingYouNeed(Block* Blockjawn, bool test) {
 void Simulation::theLegendNeverDies() {
     ostringstream fileNameStream;
     string fileNameString;
-    ofstream Rhoout, Uout, Vout;
+    ofstream Rhoout, Uout, Vout, Udiffout("output/Udiff.csv", ios::app), Vdiffout("output/Vdiff.csv", ios::app);
 
     fileNameStream<<"output/rho/"<<_step<<".csv";
     fileNameString = fileNameStream.str();
@@ -203,12 +205,30 @@ void Simulation::theLegendNeverDies() {
     fileNameStream.str("");
     Vout.open(fileNameString.c_str());
 
+    int n = 0; double udiff = 0, vdiff = 0;
     for (int nb=0; nb<_N; nb++) {
         for (int nn=0; nn<_Blocks[nb]->_N; nn++) {
             Rhoout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getRho(nn)<<endl;
             Uout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getU(nn)<<endl;
             Vout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getV(nn)<<endl;
+
+            if (_step == 0) {
+                _Uall[0].push_back(0.);
+                _Vall[0].push_back(0.);
+                _Uall[1].push_back(_Blocks[nb]->getU(nn));
+                _Vall[1].push_back(_Blocks[nb]->getV(nn));
+            } else {
+                _Uall[0][n] = _Uall[1][n];
+                _Vall[0][n] = _Vall[1][n];
+                _Uall[1][n] = _Blocks[nb]->getU(nn);
+                _Vall[1][n] = _Blocks[nb]->getV(nn);
+                udiff += abs(_Uall[1][n] - _Uall[0][n]);
+                vdiff += abs(_Vall[1][n] - _Vall[0][n]);
+            }
+            n++;
         }
     }
+    if (_step > 0) {Udiffout<<_step<<","<<udiff<<endl; Vdiffout<<_step<<","<<vdiff<<endl;}
+
     Rhoout.close(); Uout.close(); Vout.close();
 }
