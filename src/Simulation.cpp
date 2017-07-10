@@ -228,7 +228,7 @@ void Simulation::theLegendNeverDies() {
             n++;
         }
     }
-    if (_step > 0) {Udiffout<<_step<<","<<udiff<<endl; Vdiffout<<_step<<","<<vdiff<<endl;}
+    if (_step > 0) {Udiffout<<_step<<","<<udiff/_SNAPSHOT<<endl; Vdiffout<<_step<<","<<vdiff/_SNAPSHOT<<endl;}
 
     Rhoout.close(); Uout.close(); Vout.close();
 }
