@@ -42,12 +42,13 @@ def contour2D(filename, titlestring, xtickarray, ytickarray):
     plt.yticks(ytickarray)
     plt.grid(b = True, which = 'major', color = 'k', linestyle = '-')
     plt.contourf(X, Y, Z, cmap = 'jet')
+    plt.gca().set_aspect('equal', adjustable='box')
     plt.show()
 
 if __name__ == "__main__":
-    step = 2000
-    xtickarray = [0, 70, 140, 210]
-    ytickarray = [0, 16, 32, 48]
+    step = 10000
+    xtickarray = [50, 100, 150]
+    ytickarray = [12, 25, 38]
     contour2D("output/rho/" + str(step) + ".csv", "Rho", xtickarray, ytickarray)
     contour2D("output/u/" + str(step) + ".csv", "U", xtickarray, ytickarray)
     contour2D("output/v/" + str(step) + ".csv", "V", xtickarray, ytickarray)
