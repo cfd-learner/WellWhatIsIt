@@ -85,6 +85,16 @@ void Simulation::whatAreYouCasul(string geometry_path, bool test) {
 
     for (int n=0; n<_N; n++) _Blocks[n]->initNeighbors(_Blocks, _I, _J);
 
+    //initialize variables/files for outputting data
+    ofstream ofs("output/Udiff.csv", ofstream::out | ofstream::trunc); ofs.close();
+    ofs.open("output/Vdiff.csv", ofstream::out | ofstream::trunc); ofs.close();
+    for (int nb=0; nb<_N; nb++) for (int nn=0; nn<_Blocks[nb]->_N; nn++) {
+    _Uall[0].push_back(0.);
+    _Vall[0].push_back(0.);
+    _Uall[1].push_back(_Blocks[nb]->getU(nn));
+    _Vall[1].push_back(_Blocks[nb]->getV(nn));
+    }
+
     if (test) {
         cout<<endl<<_I<<" rows, "<<_J<<" columns, "<<_N<<" total blocks."<<endl;
         cin.get();
@@ -212,19 +222,13 @@ void Simulation::theLegendNeverDies() {
             Uout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getU(nn)<<endl;
             Vout<<_Blocks[nb]->getX(nn)<<","<<_Blocks[nb]->getY(nn)<<","<<_Blocks[nb]->getV(nn)<<endl;
 
-            if (_step == 0) {
-                _Uall[0].push_back(0.);
-                _Vall[0].push_back(0.);
-                _Uall[1].push_back(_Blocks[nb]->getU(nn));
-                _Vall[1].push_back(_Blocks[nb]->getV(nn));
-            } else {
-                _Uall[0][n] = _Uall[1][n];
-                _Vall[0][n] = _Vall[1][n];
-                _Uall[1][n] = _Blocks[nb]->getU(nn);
-                _Vall[1][n] = _Blocks[nb]->getV(nn);
-                udiff += abs(_Uall[1][n] - _Uall[0][n]);
-                vdiff += abs(_Vall[1][n] - _Vall[0][n]);
-            }
+            _Uall[0][n] = _Uall[1][n];
+            _Vall[0][n] = _Vall[1][n];
+            _Uall[1][n] = _Blocks[nb]->getU(nn);
+            _Vall[1][n] = _Blocks[nb]->getV(nn);
+            udiff += abs(_Uall[1][n] - _Uall[0][n]);
+            vdiff += abs(_Vall[1][n] - _Vall[0][n]);
+
             n++;
         }
     }
